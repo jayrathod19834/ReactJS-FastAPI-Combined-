@@ -34,11 +34,12 @@ const UpdateCompany = ({preloadedvalues}) => {
       .required('State cant be Empty'),
     City: yup
       .string('Enter your City')
-      .min(3, 'City should be of minimum 3 characters length')
+      .min(4, 'City should be of minimum 4 characters length')
       .required('City cant be Empty'),
     Pincode: yup 
      .string('Enter your pincode')
-     .min(3, 'Pincode should be of minimum 3 characters length')
+     .min(6, 'Pincode should be of minimum 6 characters length')
+     .max(6, 'Pincode should be of maximum 6 characters length')
      .required('Pincode is required'),
     Department: yup
      .string('Enter your Department')
@@ -50,7 +51,7 @@ const UpdateCompany = ({preloadedvalues}) => {
      .required('Branch cant be Empty'),
     Addess: yup
      .string('Enter Address')
-     .min(7, 'Addess should be of minimum 7 characters length')
+     .min(10, 'Addess should be of minimum 10 characters length')
      .required('Address cant be Empty'),
   });
 

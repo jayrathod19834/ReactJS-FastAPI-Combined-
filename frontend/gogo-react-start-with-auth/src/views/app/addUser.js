@@ -25,6 +25,7 @@ import axios from '../../api/axios'
         const validationSchemas = yup.object({
           companyid: yup  
             .string('Company is required')
+            .matches()
             .required('Company is required'),
           fullname: yup
             .string('fullname is required')
@@ -39,6 +40,8 @@ import axios from '../../api/axios'
             .required('Password is required'),
           contactno: yup 
           .string('Enter your Contact no')
+          .min(10, 'Conatct No. should be of minimum 10 in length')
+          .max(10, 'Conatct No. should be of maximum 10 in length')
           .required('Conatact no. is required'),
           dob: yup
             .string('Enter your Date of Birth')
