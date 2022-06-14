@@ -1,4 +1,4 @@
-from database.engine import session
+from database.engine import session,engine
 import datetime
 import bcrypt
 from models import models
@@ -7,10 +7,12 @@ from helpers import passhash
 
 db = session
 
+
 #---------------------------User---------------------------#
 
 def if_user_exist(email: str):
-    is_exist = db.query(models.Users).filter(models.Users.email == email).first()
+    query = f'SELECT * FROM users where email = "{email}"'
+    is_exist = engine.connect().execute(query).fetchone()
     return is_exist
 
 def role_power(user_id: int):
