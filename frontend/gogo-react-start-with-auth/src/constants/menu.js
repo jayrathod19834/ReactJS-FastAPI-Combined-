@@ -18,11 +18,6 @@ const data = [
         label: 'ListUser',
         to: `${adminRoot}/user/list`,
       },
-      // {
-      //   icon: 'simple-icon-paper-plane',
-      //   label: 'UpdateUser',
-      //   to: `${adminRoot}/user/update`,
-      // },
     ],
   },
   {

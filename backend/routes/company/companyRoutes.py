@@ -1,4 +1,5 @@
-from fastapi import APIRouter,Depends
+from fastapi import APIRouter,Depends,HTTPException
+import http
 from typing import List
 from schemas.responseUserSchema import showUser
 from schemas.requestCompanySchema import company_marsh,company_pydantic
@@ -30,6 +31,8 @@ def get_company_details(id: int,cur_user: showUser = Depends(current_user)):
 
 @router.put('/company/{id}')
 def add_new_company(id: int,data: company_pydantic,cur_user: showUser = Depends(current_user)):
+    if id == 0:
+        return HTTPException(status_code = http.HTTPStatus.FORBIDDEN, detail = 'Not Allowed To Change')
     try:
         data1 = dict(data)
         company_marsh().load(data1)
@@ -39,4 +42,6 @@ def add_new_company(id: int,data: company_pydantic,cur_user: showUser = Depends(
 
 @router.delete('/company/{id}')
 def delete_company(id: int,cur_user: showUser = Depends(current_user)):
+    if id == 0:
+        return HTTPException(status_code = http.HTTPStatus.FORBIDDEN, detail = 'Not Allowed To Delete')
     return deleteCompany.del_company(cur_user,id)

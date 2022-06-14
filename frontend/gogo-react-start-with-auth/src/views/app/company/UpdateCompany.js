@@ -1,98 +1,97 @@
-import React, { useState } from "react";
-import { useFormik } from 'formik';
+import React,{useState} from "react";
 import * as yup from 'yup';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import { Alert } from "reactstrap";
-import axios from '../../api/axios'
+import { useFormik } from 'formik';
+import axios from "../../../api/axios";
 
-      const AddCompany = () => {
+const UpdateCompany = ({preloadedvalues}) => {
+    console.log(preloadedvalues)
 
-        const str1 = localStorage.getItem('gogo_current_user');
-        const str2 = JSON.parse(str1);
-        const token = str2.access_token;
-        // const [users, setUsers] = useState([]);
-        // eslint-disable-next-line no-unused-vars
-        const [errorMessages, setErrorMessages] = useState({});
-        // const [isUser, setIsUser] = useState(true);
-        // const [req, setReq] = useState(true);
-        const [error,setError] = useState(false);
-        // eslint-disable-next-line no-unused-vars
-        const [success, setSuccess] = useState(false);
+  const str1 = localStorage.getItem('gogo_current_user');
+  const str2 = JSON.parse(str1);
+  const token = str2.access_token;
+  // eslint-disable-next-line no-unused-vars
+  const [errorMessages, setErrorMessages] = useState({});
+  const [success, setSuccess] = useState(false);
+  // eslint-disable-next-line no-unused-vars
+  const [req, setReq] = useState(true);
+  const [error,setError] = useState(false);
 
-        const validationSchemas = yup.object({
-          CompanyName: yup  
-            .string('CompanyName is required')
-            .min(3, 'CompanyName should be of minimum 3 characters length')
-            .required('CompanyName is required'),
-          Country: yup
-            .string('Country is required')
-            .min(3, 'Country should be of minimum 3 characters length')
-            .required('Country cant be empty'),
-          State: yup
-            .string('State cant be Empty')
-            .min(3, 'State should be of minimum 3 characters length')
-            .required('State cant be Empty'),
-          City: yup
-            .string('Enter your City')
-            .min(3, 'City should be of minimum 3 characters length')
-            .required('City cant be Empty'),
-          Pincode: yup 
-          .string('Enter your pincode')
-          .min(3, 'Pincode should be of minimum 3 characters length')
-          .required('Pincode is required'),
-          Department: yup
-            .string('Enter your Department')
-            .min(3, 'CompanyName should be of minimum 3 characters length')
-            .required('Department is required'),
-          Branch: yup
-           .string('Enter a Branch')
-           .min(3, 'Branch should be of minimum 3 characters length')
-           .required('Branch cant be Empty'),
-          Addess: yup
-           .string('Enter Address')
-           .min(7, 'Addess should be of minimum 7 characters length')
-           .required('Address cant be Empty'),
-        });
+  const validationSchemas = yup.object({
+    CompanyName: yup  
+      .string('CompanyName is required')
+      .min(3, 'CompanyName should be of minimum 3 characters length')
+      .required('CompanyName is required'),
+    Country: yup
+      .string('Country is required')
+      .min(3, 'Country should be of minimum 3 characters length')
+      .required('Country cant be empty'),
+    State: yup
+      .string('State cant be Empty')
+      .min(3, 'State should be of minimum 3 characters length')
+      .required('State cant be Empty'),
+    City: yup
+      .string('Enter your City')
+      .min(3, 'City should be of minimum 3 characters length')
+      .required('City cant be Empty'),
+    Pincode: yup 
+     .string('Enter your pincode')
+     .min(3, 'Pincode should be of minimum 3 characters length')
+     .required('Pincode is required'),
+    Department: yup
+     .string('Enter your Department')
+     .min(3, 'CompanyName should be of minimum 3 characters length')
+     .required('Department is required'),
+    Branch: yup
+     .string('Enter a Branch')
+     .min(3, 'Branch should be of minimum 3 characters length')
+     .required('Branch cant be Empty'),
+    Addess: yup
+     .string('Enter Address')
+     .min(7, 'Addess should be of minimum 7 characters length')
+     .required('Address cant be Empty'),
+  });
 
-        const formik = useFormik({
-          initialValues: {
-            CompanyName: '',
-            Country: '',
-            State: '',
-            City: '',
-            Pincode: "",
-            Department: '',
-            Branch: '',
-            Addess: '',
-          },
-          validationSchema: validationSchemas,
-          onSubmit: (values) => {(
-            axios.post('/company',{
-            "company_name": values.CompanyName,
-            "country": values.Country,
-            "state": values.State,
-            'city': values.City,
-            "pincode": values.Pincode,
-            "department": values.Department,
-            "branch": values.Branch,
-            "address": values.Addess,
-          }
-            ,{headers:{
-              'Authorization':`bearer ${token}`
-            }}
-            )
-            .then(response => {setSuccess(response.data.detail)})
-            .catch(err => {
-              setError(err.response.data.detail)}));
-            
-          }, 
-        });
-
-  return (
-     <div>
-      <form onSubmit={formik.handleSubmit}>
-      <TextField
+  const formik = useFormik({
+    initialValues: {
+      CompanyName: preloadedvalues.company_name,
+      Country: preloadedvalues.country,
+      State: preloadedvalues.state,
+      City: preloadedvalues.city,
+      Pincode: preloadedvalues.pincode,
+      Department: preloadedvalues.department,
+      Branch: preloadedvalues.branch,
+      Addess: preloadedvalues.address,
+    },
+    validationSchema: validationSchemas,
+    onSubmit: (values) => {(
+      axios.put(`/company/${preloadedvalues.company_id}`,{
+      "company_name": values.CompanyName,
+      "country": values.Country,
+      "state": values.State,
+      'city': values.City,
+      "pincode": values.Pincode,
+      "department": values.Department,
+      "branch": values.Branch,
+      "address": values.Addess,
+    }
+      ,{headers:{
+        'Authorization':`bearer ${token}`
+      }}
+      )
+      .then(response => {setSuccess(response.data.detail)})
+      .catch(err => {
+        setError(err.response.data.detail)}));
+      
+    }, 
+  });
+      
+    return(
+      <div>
+        <form onSubmit={formik.handleSubmit}>
+        <TextField
           fullWidth
           id="CompanyName"
           name="CompanyName"
@@ -213,9 +212,9 @@ import axios from '../../api/axios'
         <Button color="primary" variant="contained" fullWidth type="submit">
           Submit
         </Button>
-      </form>
-    </div>
-  );
-}
+        </form>
+      </div>
+    );
+  }
 
-export default AddCompany
+export default UpdateCompany

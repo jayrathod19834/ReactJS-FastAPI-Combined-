@@ -1,4 +1,5 @@
 import React, { useEffect,useState } from 'react';
+import { Link } from "react-router-dom";
 import Table from 'react-bootstrap/Table';
 import axios from '../../../api/axios';
 
@@ -52,6 +53,7 @@ function ListCompany() {
                 <th>Department</th>
                 <th>Branch</th>
                 <th>Address</th>
+                <th>Action</th>
             </tr>
             </thead>
             <tbody>
@@ -67,6 +69,10 @@ function ListCompany() {
                             <td>{company.department}</td>
                             <td>{company.branch}</td>
                             <td>{company.address}</td>
+                            <td><Link  to={`update/${company.company_id}`}>
+                              <span className="update">update</span>
+                              </Link>
+                            </td>
                         </tr>
                      )
                 })}
