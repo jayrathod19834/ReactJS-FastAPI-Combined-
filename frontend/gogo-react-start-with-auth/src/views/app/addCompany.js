@@ -39,6 +39,7 @@ import axios from '../../api/axios'
             .required('City cant be Empty'),
           Pincode: yup 
           .string('Enter your pincode')
+          .matches(/^[0-9]*$/,'Please enter valid Pincode')
           .min(6, 'Pincode should be of minimum 6 characters length')
           .max(6, 'Pincode should be of maximum 6 characters length')
           .required('Pincode is required'),

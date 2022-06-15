@@ -75,17 +75,18 @@ def list_supervisor_admin_supervisor(cur_user_cid):
 
 def delete_user_superadmin(id):
     try:
-        query = f"delete from users where id = {id}"
+        query = f"UPDATE users SET isactive = 0 where id = {id} and role_id != 0"
+        #"delete from users where id = {id}"
         db.execute(query)
         db.commit()
         db.close()
-        return True
+        return "User Deleted"
     except:
-        return False
+        return "Unable to Delete"
 
 def delete_user_admin(id):
     try:
-        query = f'delete from users where id = {id} and role_id != 0 and role_id != 1'
+        query = f'UPDATE users SET isactive = 0 where id = {id} and role_id != 0 and role_id != 1'
         db.execute(query)
         db.commit()
         db.close()
@@ -95,13 +96,13 @@ def delete_user_admin(id):
 
 def delete_user_supervisor(id):
     try:
-        query = f'delete from users where id = {id} and role_id != 0 and role_id != 1 and role_id != 2'
+        query = f'UPDATE users SET isactive = 0 where id = {id} and role_id != 0 and role_id != 1 and role_id != 2'
         db.execute(query)
         db.commit()
         db.close()
-        return True
+        return "User Deleted"
     except:
-        return False
+        return "Unable to Delete"
 
 #----------------------Company------------------------#
 
