@@ -3,7 +3,8 @@ import { Route, withRouter, Switch, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import AppLayout from 'layout/AppLayout';
-// import { ProtectedRoute, UserRole } from 'helpers/authHelper';
+import { ProtectedRoute } from 'helpers/authHelper';
+import { UserRole } from 'constants/defaultValues'
 
 const User = React.lazy(() =>
   import(/* webpackChunkName: "viwes-user" */ './user')
@@ -26,15 +27,15 @@ const App = ({ match }) => {
               path={`${match.url}/user`}
               render={(props) => <User {...props} />}
             />
-            <Route
+            {/* <Route
               path={`${match.url}/company`}
               render={(props) => <Company {...props} />}
-            />
-            {/* <ProtectedRoute
-                    path={`${match.url}/second-menu`}
-                    component={SecondMenu}
-                    roles={[UserRole.Admin]}
             /> */}
+            <ProtectedRoute
+              path={`${match.url}/company`}
+              component={Company} 
+              roles = {[UserRole.Superadmin]}
+            />
             <Route
               path={`${match.url}/blank-page`}
               render={(props) => <BlankPage {...props} />}

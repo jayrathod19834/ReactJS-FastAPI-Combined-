@@ -9,14 +9,14 @@ const Update = ({ match }) => (
   <>
     <Row>
       <Colxx xxs="12">
-        <Breadcrumb heading="List Company" match={match} />
+        <Breadcrumb heading="Update Company" match={match} />
         <Separator className="mb-5" />
       </Colxx>
     </Row>
     <Row>
       <Colxx xxs="12" className="mb-4">
         <p>
-          <IntlMessages id="List Company" />
+          <IntlMessages id="Update Company" />
         </p>
         <GetCompany id = {match.params.id} />
       </Colxx>

@@ -55,7 +55,6 @@ function* loginWithEmailPassword({ payload }) {
       email: userDetails.email,company: userDetails.company_id, supervisor: userDetails.working_uder,
       contact: userDetails.contact_no ,access_token: token };
       const item = item1;
-      console.log(item);
       setCurrentUser(item);
       yield put(loginUserSuccess(item));
       history.push(adminRoot);  

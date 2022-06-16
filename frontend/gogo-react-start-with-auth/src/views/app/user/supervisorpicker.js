@@ -22,14 +22,7 @@ export default function SelectLabels() {
         });
         setUsers(response.data);
       } catch (err) {
-        if (!err?.response) {
-          setErrorMessages('No server Response');
-        } else if (err.response?.status === 401) {
-          setErrorMessages('Unable to Fetch');
-        } else {
-          setErrorMessages('Failed');
-        }
-        console.error(err);
+        displayNotification('Fetching Error',err.response.data.detail,'error')
       }
     };
 

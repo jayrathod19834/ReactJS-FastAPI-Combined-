@@ -1,6 +1,5 @@
 import React from 'react';
 import { Row } from 'reactstrap';
-import IntlMessages from 'helpers/IntlMessages';
 import { Colxx, Separator } from 'components/common/CustomBootstrap';
 import Breadcrumb from 'containers/navs/Breadcrumb';
 import ListTable from './ListTable';
@@ -15,9 +14,6 @@ const Start1 = ({ match }) => (
     </Row>
     <Row>
       <Colxx xxs="12" className="mb-4">
-        <p>
-          <IntlMessages id="List User" />
-        </p>
         <ListTable /> 
       </Colxx>
     </Row>

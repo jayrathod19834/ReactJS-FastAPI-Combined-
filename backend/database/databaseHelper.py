@@ -40,14 +40,14 @@ def update_user(user_schema,id: int):
     db.close()
 
 def list_all_user():
-    return db.query(models.Users).all()
+    return db.query(models.Users).filter(models.Users.isactive == 1).all()
 
 def list_user_admin(cur_user):
-    query = f"SELECT * FROM users WHERE role_id != 0 AND c_id = {cur_user.c_id}"
+    query = f"SELECT * FROM users WHERE role_id != 0 AND c_id = {cur_user.c_id} AND isactive = 1"
     return db.execute(query).fetchall()
 
 def list_user_supervisor(cur_user):
-    query = f"SELECT * FROM users WHERE role_id != 0 AND role_id != 1 AND c_id = {cur_user.c_id}"
+    query = f"SELECT * FROM users WHERE role_id != 0 AND role_id != 1 AND c_id = {cur_user.c_id} AND isactive = 1"
     return db.execute(query).fetchall()
 
 def list_user_id(id: int):
@@ -129,7 +129,7 @@ def update_company(data,id):
     db.close()
 
 def list_company_superadmin():
-    return db.query(models.Company).all()
+    return db.query(models.Company).filter(models.Company.isactive == 1).all()
 
 def list_company_superadmin_id(id: int):
     return db.query(models.Company).get(id)

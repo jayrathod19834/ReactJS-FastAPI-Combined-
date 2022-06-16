@@ -1,6 +1,7 @@
 import React, { useState,useEffect } from "react";
 import axios from '../../../api/axios'
 import UpdateUser from "./UpdateUser";
+import displayNotification from "../../../components/common/react-notifications/DisplayNotification";
 
 const GetUser = (id) => {
     const str1 = localStorage.getItem('gogo_current_user');
@@ -19,14 +20,7 @@ const GetUser = (id) => {
             });
             setUser(response.data);
           } catch (err) {
-            if (!err?.response) {
-              setErrorMessages('No server Response');
-            } else if (err.response?.status === 401) {
-              setErrorMessages('Unable to Fetch');
-            } else {
-              setErrorMessages('Failed');
-            }
-            console.error(err);
+            displayNotification('Fetching Error',err.response.data.detail,'error')
           }
         };
         

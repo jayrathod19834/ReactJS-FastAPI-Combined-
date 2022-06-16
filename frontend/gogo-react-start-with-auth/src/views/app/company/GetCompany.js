@@ -1,5 +1,6 @@
 import React, { useState,useEffect } from "react";
 import axios from '../../../api/axios'
+import displayNotification from "../../../components/common/react-notifications/DisplayNotification";
 import UpdateCompany from "./UpdateCompany";
 
 const GetCompany = (id) => {
@@ -19,17 +20,9 @@ const GetCompany = (id) => {
             });
             setCompany(response.data);
           } catch (err) {
-            if (!err?.response) {
-              setErrorMessages('No server Response');
-            } else if (err.response?.status === 401) {
-              setErrorMessages('Unable to Fetch');
-            } else {
-              setErrorMessages('Failed');
-            }
-            console.error(err);
+            displayNotification('Fetching Error',err.response.data.detail,'error')
           }
         };
-        
         fetchCompany();
       },[]);
       return company ? <UpdateCompany preloadedvalues={company} /> : <div> loading...</div>;
