@@ -4,7 +4,7 @@ import { Field, Formik, Form } from 'formik';
 import { CardBody, CardTitle, Card, Label, FormGroup, Row, Button } from 'reactstrap';
 import { Colxx } from 'components/common/CustomBootstrap';
 import IntlMessages from 'helpers/IntlMessages';
-import axios from "../../../api/axios";
+import exportObject from "api";
 import displayNotification from "../../../components/common/react-notifications/DisplayNotification";
 
 const validationSchemas = yup.object({
@@ -44,45 +44,18 @@ const validationSchemas = yup.object({
 })
 
 const UpdateCompany = ({ preloadedvalues }) => {
-  const str1 = localStorage.getItem('gogo_current_user');
-  const str2 = JSON.parse(str1);
-  const token = str2.access_token;
-  // eslint-disable-next-line no-unused-vars
-  const [errorMessages, setErrorMessages] = useState({});
+
   // eslint-disable-next-line no-unused-vars
   const [success, setSuccess] = useState(false);
-  // eslint-disable-next-line no-unused-vars
-  const [req, setReq] = useState(true);
-  // eslint-disable-next-line no-unused-vars
-  const [error, setError] = useState(false);
-
-
-  const submitForm = (values) => {
-    (
-      axios.put(`/company/${preloadedvalues.company_id}`, {
-        "company_name": values.CompanyName,
-        "country": values.Country,
-        "state": values.State,
-        'city': values.City,
-        "pincode": values.Pincode,
-        "department": values.Department,
-        "branch": values.Branch,
-        "address": values.Addess,
-      }
-        , {
-          headers: {
-            'Authorization': `bearer ${token}`
-          }
-        }
-      )
-        .then(response => {
-          setSuccess(response.data.detail)
-          displayNotification('Company', response.data.detail, 'success');
-        })
-        .catch(err => {
-          setError(err.response.data.detail)
-          displayNotification('Company', err.response.data.detail, 'error');
-        }))
+  const submitForm = async (values) => {
+    try {
+      const response = await exportObject.companyUpdate(values)
+      setSuccess(response.data.detail)
+      displayNotification('Company', response.data.detail, 'success');
+    }
+    catch (err) {
+      displayNotification('Company', err.response.data.detail, 'error');
+    }
   }
 
   return (
@@ -94,6 +67,7 @@ const UpdateCompany = ({ preloadedvalues }) => {
           </CardTitle>
           <Formik
             initialValues={{
+              id: preloadedvalues.company_id,
               CompanyName: preloadedvalues.company_name,
               Country: preloadedvalues.country,
               State: preloadedvalues.state,

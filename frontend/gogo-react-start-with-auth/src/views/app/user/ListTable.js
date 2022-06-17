@@ -6,14 +6,11 @@ import { Card } from "@material-ui/core";
 import IntlMessages from 'helpers/IntlMessages';
 import Table from 'react-bootstrap/Table';
 import confirm from "reactstrap-confirm";
-import axios from '../../../api/axios';
+import exportObject from '../../../api';
 import displayNotification from '../../../components/common/react-notifications/DisplayNotification';
 
 function ListTable() {
 
-  const str1 = localStorage.getItem('gogo_current_user');
-  const str2 = JSON.parse(str1);
-  const token = str2.access_token;
   // eslint-disable-next-line no-unused-vars
   const [user, setUsers] = useState([])
   // eslint-disable-next-line no-unused-vars
@@ -23,13 +20,8 @@ function ListTable() {
 
   useEffect(() => {
     const fetchUsers = async () => {
-
       try {
-        const response = await axios.get('/user', {
-          headers: {
-            'Authorization': `Bearer ${token}`
-          }
-        });
+        const response = await exportObject.userList()
         setUsers(response.data);
       } catch (err) {
         displayNotification('Fetching Error', err.response.data.detail, 'error');
@@ -84,19 +76,12 @@ function ListTable() {
                           });
                           if (result){
                             try{
-                              const res1 = await axios.delete(`/user/${users.id}`, {
-                                headers: { 'Authorization': `Bearer ${token}` }
-                              })
-                              console.log(res1.data);
+                              const res1 = await exportObject.userDelete(users.id)
                               displayNotification('Deleting', res1.data, 'error');
                             }catch (err){
                               displayNotification('Deleting Error', err.response.data.detail, 'error');
                             }
-                            const response = await axios.get('/user', {
-                              headers: {
-                                'Authorization': `Bearer ${token}`
-                              }
-                            });
+                            const response = await exportObject.userList()
                             setUsers(response.data);
                           }
                       }}

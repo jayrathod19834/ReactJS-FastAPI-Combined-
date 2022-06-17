@@ -6,14 +6,12 @@ import { Card } from "@material-ui/core";
 import IntlMessages from 'helpers/IntlMessages';
 import Table from 'react-bootstrap/Table';
 import confirm from "reactstrap-confirm";
+import exportObject from 'api';
 import displayNotification from '../../../components/common/react-notifications/DisplayNotification';
-import axios from '../../../api/axios';
 
 function ListCompany() {
 
-  const str1 = localStorage.getItem('gogo_current_user');
-  const str2 = JSON.parse(str1);
-  const token = str2.access_token;
+
   // eslint-disable-next-line no-unused-vars
   const [companys, setCompanys] = useState([])
   // eslint-disable-next-line no-unused-vars
@@ -24,26 +22,18 @@ function ListCompany() {
 
   useEffect(() => {
     const fetchCompany = async () => {
-
       try {
-        const response = await axios.get('/company', {
-          headers: {
-            'Authorization': `Bearer ${token}`
-          }
-        });
-        if(response?.status)
-        {
-        console.log(response?.data);
-        setCompanys(response?.data);
-        }
-      } catch (err) {
+        const response = await exportObject.companyList()
+        setCompanys(response.data);
+      }
+      catch (err) {
         displayNotification('Fetching Error', err.response.data.detail, 'error')
       }
     };
     fetchCompany();
   }, []);
 
-  
+
   return (
     <div>
       <Card className="mb-4">
@@ -91,16 +81,12 @@ function ListCompany() {
                         });
                         if (result) {
                           try {
-                            const res1 = await axios.delete(`/company/${company.company_id}`, {
-                              headers: { 'Authorization': `Bearer ${token}` }
-                            })
+                            const res1 = await exportObject.companyDelete(company.company_id)
                             displayNotification('Deleting', res1.data.detail, 'error');
                           } catch (err) {
                             displayNotification('Deleting Error', err.response.data.detail, 'error');
                           }
-                          const response = await axios.get('/company', {
-                            headers: { 'Authorization': `Bearer ${token}` }
-                          });
+                          const response = await exportObject.companyList();
                           setCompanys(response.data);
                         }
                       }}>

@@ -4,7 +4,7 @@ import * as yup from 'yup';
 import { CardBody, CardTitle, Card, Label, FormGroup, Row, Button } from 'reactstrap';
 import { Colxx } from 'components/common/CustomBootstrap';
 import IntlMessages from 'helpers/IntlMessages';
-import axios from "../../../api/axios";
+import exportObject from "api";
 import displayNotification from "../../../components/common/react-notifications/DisplayNotification";
 
 const UpdateUser = ({ preloadedvalues }) => {
@@ -56,11 +56,7 @@ const UpdateUser = ({ preloadedvalues }) => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await axios.get('/supervisor', {
-          headers: {
-            'Authorization': `Bearer ${token}`
-          }
-        });
+        const response = await exportObject.listSupervisor()
         setUsers(response.data);
       } catch (err) {
         displayNotification('Fetching Error', error.response.data.detail, 'error')
@@ -69,32 +65,15 @@ const UpdateUser = ({ preloadedvalues }) => {
     fetchUsers();
   }, []);
 
-  const submitForm = (values) => {
-    console.log(values)(
-      axios.put(`/user/${preloadedvalues.id}`, {
-        "working_under": parseInt(values.Supervisorselect, 10),
-        "role_id": parseInt(values.Roleselect, 10),
-        'fullname': values.fullname,
-        "email": values.email,
-        "dob": values.dob,
-        "contact_no": values.contactno,
-        "c_id": parseInt(values.companyid, 10),
-      }
-        , {
-          headers: {
-            'Authorization': `bearer ${token}`
-          }
-        }
-      )
-        .then(response => {
-          setSuccess(response.data.detail)
-          displayNotification('User', response.data.detail, 'success');
-        })
-        .catch(err => {
-          setError(err.response.data.detail)
-          displayNotification('User', err.response.data.detail, 'error')
-        }));
-
+  const submitForm = async (values) => {
+    try {
+      const response = await exportObject.userUpdate(values)
+      setSuccess(response.data.detail)
+      displayNotification('User', response.data.detail, 'success');
+    }
+    catch (err) {
+      displayNotification('User', err.response.data.detail, 'error')
+    }
   }
 
   return (
@@ -106,6 +85,7 @@ const UpdateUser = ({ preloadedvalues }) => {
           </CardTitle>
           <Formik
             initialValues={{
+              id: preloadedvalues.id,
               companyid: preloadedvalues.c_id,
               fullname: preloadedvalues.fullname,
               email: preloadedvalues.email,
