@@ -9,6 +9,7 @@ const GetUser = (id) => {
     useEffect(() => {
         const fetchUsers = async () => {
           try {
+            // eslint-disable-next-line
             const response = await exportObject.userListId(id.id)
             setUser(response.data);
           } catch (err) {

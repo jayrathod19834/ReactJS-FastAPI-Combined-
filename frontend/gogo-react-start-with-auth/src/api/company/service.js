@@ -4,6 +4,7 @@ const BASE_URL_FOR_API = process.env.REACT_APP_BASE_URL
 
 class Company {
 
+    // eslint-disable-next-line
     getHeader() {
         let str1 = localStorage.getItem('gogo_current_user');
         str1 = JSON.parse(str1);

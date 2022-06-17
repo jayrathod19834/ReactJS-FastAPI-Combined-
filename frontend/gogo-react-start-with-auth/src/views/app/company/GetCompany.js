@@ -8,6 +8,7 @@ const GetCompany = (id) => {
     useEffect(() => {
         const fetchCompany = async () => {
           try {
+            // eslint-disable-next-line
             const response = await exportObject.companyListId(id.id)
             setCompany(response.data);
           } catch (err) {

@@ -67,7 +67,7 @@ function ListTable() {
                     <td>{users.role_id}</td>
                     <td><FormOutlined style={{ color: 'grey' }} type='submit' onClick={() => history.push(`update/${users.id}`)} />
                       <DeleteOutlined style={{ color: 'red', marginLeft: 12 }} type='submit' onClick={ async () =>{
-                          let result = await confirm({
+                          const result = await confirm({
                             title: <div> Are You Sure Want to <strong>delete</strong> the Company? </div>,
                             message: "This Action Cannot Be Undone!",
                             confirmText: "Delete",

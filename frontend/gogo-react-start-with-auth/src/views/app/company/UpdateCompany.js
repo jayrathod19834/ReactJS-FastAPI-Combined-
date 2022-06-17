@@ -81,13 +81,8 @@ const UpdateCompany = ({ preloadedvalues }) => {
             onSubmit={submitForm}
           >
             {({
-              handleSubmit,
-              setFieldValue,
-              setFieldTouched,
-              values,
               errors,
               touched,
-              isSubmitting,
             }) => (
               <Form>
                 <Row>

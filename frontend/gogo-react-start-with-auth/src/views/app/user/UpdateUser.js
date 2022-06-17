@@ -41,9 +41,6 @@ const UpdateUser = ({ preloadedvalues }) => {
       .required('Select a Role'),
   })
 
-  const str1 = localStorage.getItem('gogo_current_user');
-  const str2 = JSON.parse(str1);
-  const token = str2.access_token;
   // eslint-disable-next-line no-unused-vars
   const [users, setUsers] = useState([]);
   // eslint-disable-next-line no-unused-vars
@@ -98,13 +95,9 @@ const UpdateUser = ({ preloadedvalues }) => {
             onSubmit={submitForm}
           >
             {({
-              handleSubmit,
               setFieldValue,
-              setFieldTouched,
-              values,
               errors,
               touched,
-              isSubmitting,
             }) => (
               <Form>
                 <Row>

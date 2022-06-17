@@ -1,6 +1,7 @@
 import User from './service'
 import displayNotification from "../../components/common/react-notifications/DisplayNotification";
 
+// eslint-disable-next-line
 const userList = async () => {
     try{
         const response = await User.list()
@@ -10,6 +11,7 @@ const userList = async () => {
     }
 }
 
+// eslint-disable-next-line
 const userListId = async (props) => {
     try{
         const response = await User.listid(props)
@@ -19,6 +21,7 @@ const userListId = async (props) => {
     }
 }
 
+// eslint-disable-next-line
 const userAdd = async (props) => {
     try{
         const response = await User.add(props)
@@ -28,6 +31,7 @@ const userAdd = async (props) => {
     }
 }
 
+// eslint-disable-next-line
 const userUpdate = async (props) => {
     try{
         const response = await User.update(props)
@@ -37,6 +41,7 @@ const userUpdate = async (props) => {
     }
 }
 
+// eslint-disable-next-line
 const listSupervisor = async () => {
     try{
         const response = await User.supervisor()
@@ -46,6 +51,7 @@ const listSupervisor = async () => {
     }
 }
 
+// eslint-disable-next-line
 const userDelete = async (props) => {
     try{
         const response = await User.delete(props)
