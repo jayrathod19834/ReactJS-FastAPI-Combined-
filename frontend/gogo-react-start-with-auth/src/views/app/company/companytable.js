@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory } from "react-router-dom";
-import {FormOutlined,DeleteOutlined} from '@ant-design/icons'
+import { FormOutlined, DeleteOutlined } from '@ant-design/icons'
 import { CardBody, CardTitle } from 'reactstrap';
 import { Card } from "@material-ui/core";
 import IntlMessages from 'helpers/IntlMessages';
 import Table from 'react-bootstrap/Table';
+import confirm from "reactstrap-confirm";
 import displayNotification from '../../../components/common/react-notifications/DisplayNotification';
 import axios from '../../../api/axios';
 
@@ -30,7 +31,11 @@ function ListCompany() {
             'Authorization': `Bearer ${token}`
           }
         });
-        setCompanys(response.data);
+        if(response?.status)
+        {
+        console.log(response?.data);
+        setCompanys(response?.data);
+        }
       } catch (err) {
         displayNotification('Fetching Error', err.response.data.detail, 'error')
       }
@@ -38,7 +43,7 @@ function ListCompany() {
     fetchCompany();
   }, []);
 
-
+  
   return (
     <div>
       <Card className="mb-4">
@@ -75,20 +80,29 @@ function ListCompany() {
                     <td>{company.branch}</td>
                     <td>{company.address}</td>
                     <td>
-                      <FormOutlined  style={{color: 'grey'}} type='submit' size='large' onClick={() => history.push(`update/${company.company_id}`)}/>
-                      <DeleteOutlined style={{color: 'red',marginLeft:12}} type='submit' onClick={async () => {
-                        try {
-                          const res1 = await axios.delete(`/company/${company.company_id}`, {
-                            headers: { 'Authorization': `Bearer ${token}` }
-                          })
-                          displayNotification('Deleting', res1.data.detail, 'error');
-                        } catch (err) {
-                          displayNotification('Deleting Error', err.response.data.detail, 'error');
-                        }
-                        const response = await axios.get('/company', {
-                          headers: { 'Authorization': `Bearer ${token}` }
+                      <FormOutlined style={{ color: 'grey' }} type='submit' size='large' onClick={() => history.push(`update/${company.company_id}`)} />
+                      <DeleteOutlined style={{ color: 'red', marginLeft: 12 }} type='submit' onClick={async () => {
+                        let result = await confirm({
+                          title: <div> Are You Sure Want to <strong>delete</strong> the Company? </div>,
+                          message: "This Action Cannot Be Undone!",
+                          confirmText: "Delete",
+                          confirmColor: "danger",
+                          cancelColor: "primary",
                         });
-                        setCompanys(response.data);
+                        if (result) {
+                          try {
+                            const res1 = await axios.delete(`/company/${company.company_id}`, {
+                              headers: { 'Authorization': `Bearer ${token}` }
+                            })
+                            displayNotification('Deleting', res1.data.detail, 'error');
+                          } catch (err) {
+                            displayNotification('Deleting Error', err.response.data.detail, 'error');
+                          }
+                          const response = await axios.get('/company', {
+                            headers: { 'Authorization': `Bearer ${token}` }
+                          });
+                          setCompanys(response.data);
+                        }
                       }}>
                         Delete
                       </DeleteOutlined>

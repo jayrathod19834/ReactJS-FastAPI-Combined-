@@ -5,6 +5,7 @@ import { CardBody, CardTitle } from 'reactstrap';
 import { Card } from "@material-ui/core";
 import IntlMessages from 'helpers/IntlMessages';
 import Table from 'react-bootstrap/Table';
+import confirm from "reactstrap-confirm";
 import axios from '../../../api/axios';
 import displayNotification from '../../../components/common/react-notifications/DisplayNotification';
 
@@ -34,9 +35,10 @@ function ListTable() {
         displayNotification('Fetching Error', err.response.data.detail, 'error');
       }
     };
-
     fetchUsers();
   }, []);
+
+  
 
   return (
     <div>
@@ -72,17 +74,33 @@ function ListTable() {
                     <td>{users.working_under}</td>
                     <td>{users.role_id}</td>
                     <td><FormOutlined style={{ color: 'grey' }} type='submit' onClick={() => history.push(`update/${users.id}`)} />
-                      <DeleteOutlined style={{ color: 'red', marginLeft: 12 }} type='submit' onClick={async () => {
-                        await axios.delete(`/user/${users.id}`, {
-                          headers: { 'Authorization': `Bearer ${token}` }
-                        });
-                        const response = await axios.get('/user', {
-                          headers: {
-                            'Authorization': `Bearer ${token}`
+                      <DeleteOutlined style={{ color: 'red', marginLeft: 12 }} type='submit' onClick={ async () =>{
+                          let result = await confirm({
+                            title: <div> Are You Sure Want to <strong>delete</strong> the Company? </div>,
+                            message: "This Action Cannot Be Undone!",
+                            confirmText: "Delete",
+                            confirmColor: "danger",
+                            cancelColor: "primary", 
+                          });
+                          if (result){
+                            try{
+                              const res1 = await axios.delete(`/user/${users.id}`, {
+                                headers: { 'Authorization': `Bearer ${token}` }
+                              })
+                              console.log(res1.data);
+                              displayNotification('Deleting', res1.data, 'error');
+                            }catch (err){
+                              displayNotification('Deleting Error', err.response.data.detail, 'error');
+                            }
+                            const response = await axios.get('/user', {
+                              headers: {
+                                'Authorization': `Bearer ${token}`
+                              }
+                            });
+                            setUsers(response.data);
                           }
-                        });
-                        setUsers(response.data);
-                      }} />
+                      }}
+                       />
                     </td>
                   </tr>
                 )

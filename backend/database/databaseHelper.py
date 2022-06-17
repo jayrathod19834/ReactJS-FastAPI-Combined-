@@ -5,6 +5,7 @@ from models import models
 from config import logError
 from helpers import passhash
 
+
 db = session
 
 
@@ -12,18 +13,20 @@ db = session
 
 def if_user_exist(email: str):
     query = f'SELECT * FROM users where email = "{email}"'
-    is_exist = engine.connect().execute(query).fetchone()
-    return is_exist
+    with engine.connect() as conn:
+        is_exist = conn.execute(query).fetchone()
+        return is_exist
 
 def role_power(user_id: int):
     query = f'SELECT role_power FROM role INNER JOIN users on role.role_id = users.role_id where id = {user_id}'
-    res = db.execute(query)
-    roles = res.fetchall()
-    if roles != []:
-        for x in roles:
-            return x[0]
-    else:
-        return logError.NO_USER_WITH_THAT_ID_ERROR
+    with engine.connect() as conn:
+        res = conn.execute(query)
+        roles = res.fetchall()
+        if roles != []:
+            for x in roles:
+                return x[0]
+        else:
+            return logError.NO_USER_WITH_THAT_ID_ERROR
 
 def add_new_user(user_schema):
     salt = bcrypt.gensalt()
@@ -40,26 +43,32 @@ def update_user(user_schema,id: int):
     db.close()
 
 def list_all_user():
-    return db.query(models.Users).filter(models.Users.isactive == 1).all()
+    query = 'SELECT * FROM users WHERE isactive = 1'
+    with engine.connect() as conn:
+        return conn.execute(query).fetchall()
 
 def list_user_admin(cur_user):
     query = f"SELECT * FROM users WHERE role_id != 0 AND c_id = {cur_user.c_id} AND isactive = 1"
-    return db.execute(query).fetchall()
+    with engine.connect() as conn:
+        return conn.execute(query).fetchall()
 
 def list_user_supervisor(cur_user):
     query = f"SELECT * FROM users WHERE role_id != 0 AND role_id != 1 AND c_id = {cur_user.c_id} AND isactive = 1"
-    return db.execute(query).fetchall()
+    with engine.connect() as conn:
+        return conn.execute(query).fetchall()
 
 def list_user_id(id: int):
     return db.query(models.Users).get(id)
 
 def list_user_id_admin(id: int,cur_user):
     query = f"SELECT * FROM users WHERE id = {id} AND role_id != 0 AND c_id = {cur_user.c_id}"
-    return db.execute(query).fetchone()
+    with engine.connect() as conn:
+        return conn.execute(query).fetchone()
 
 def list_user_id_supervisor(id: int,cur_user):
     query = f"SELECT * FROM users WHERE id = {id} AND role_id != 0 AND role_id != 1 AND c_id = {cur_user.c_id}"
-    return db.execute(query).fetchone()
+    with engine.connect() as conn:
+        return conn.execute(query).fetchone()
 
 def update_email_check(id: int):
     query = f"SELECT email FROM users WHERE id != '{id}'"
@@ -67,11 +76,13 @@ def update_email_check(id: int):
 
 def list_supervisor_superadmin():
     query = f"SELECT * FROM users WHERE role_id = 2"
-    return db.execute(query).fetchall()
+    with engine.connect() as conn:
+        return conn.execute(query).fetchall()
 
 def list_supervisor_admin_supervisor(cur_user_cid):
     query = f"SELECT * FROM users WHERE role_id = 2 and c_id = {cur_user_cid}"
-    return db.execute(query).fetchall()
+    with engine.connect() as conn:
+        return conn.execute(query).fetchall()
 
 def delete_user_superadmin(id):
     try:
@@ -129,7 +140,9 @@ def update_company(data,id):
     db.close()
 
 def list_company_superadmin():
-    return db.query(models.Company).filter(models.Company.isactive == 1).all()
+    query = 'SELECT * FROM company WHERE isactive = 1'
+    with engine.connect() as conn:
+        return conn.execute(query).fetchall()
 
 def list_company_superadmin_id(id: int):
     return db.query(models.Company).get(id)
