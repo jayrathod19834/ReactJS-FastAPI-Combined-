@@ -64,6 +64,7 @@ class App extends React.Component {
             <Suspense fallback={<div className="loading" />}>
               <Router>
                 <Switch>
+                <Redirect exact from='/' to = '/user' />
                   <ProtectedRoute
                     path={adminRoot}
                     component={ViewApp}

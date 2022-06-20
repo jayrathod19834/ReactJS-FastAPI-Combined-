@@ -19,7 +19,7 @@ const GetUser = (id) => {
         
         fetchUsers();
       },[]);
-      return user ? <UpdateUser preloadedvalues={user} /> : <div> loading ...</div>;
+      return user ? <UpdateUser preloadedvalues={user} /> : <div> loading...</div>;
     }
 
 export default GetUser;

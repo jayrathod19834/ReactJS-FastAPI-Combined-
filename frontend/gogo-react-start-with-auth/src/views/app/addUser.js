@@ -227,7 +227,7 @@ const AddUser = () => {
                       <FormGroup>
                         <Label className="form-group has-float-label">
                           <Field as='select' className="w-100" style={{ height: '30px' }}
-                            labelId="demo-simple-select-helper-label1"
+                            labelid="demo-simple-select-helper-label1"
                             id="Roleselect"
                             name='Roleselect'
                             label='Roleselect'
