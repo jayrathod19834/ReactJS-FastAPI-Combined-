@@ -13,7 +13,7 @@ const Start2 = React.lazy(() =>
 const Gogo = ({ match }) => (
   <Suspense fallback={<div className="loading" />}>
     <Switch>
-      <Redirect exact from={`${match.url}/`} to={`${match.url}/add`} />
+      <Redirect exact from={`${match.url}/`} to={`${match.url}/list`} />
       <Route
         path={`${match.url}/add`}
         render={(props) => <Start {...props} />}

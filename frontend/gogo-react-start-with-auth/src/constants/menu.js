@@ -39,18 +39,18 @@ const data = [
       },
     ],
   },
-  {
-    id: 'blankpage',
-    icon: 'iconsminds-bucket',
-    label: 'menu.blank-page',
-    to: `${adminRoot}/blank-page`,
-  },
-  {
-    id: 'docs',
-    icon: 'iconsminds-library',
-    label: 'menu.docs',
-    to: 'https://gogo-react-docs.coloredstrategies.com/',
-    newWindow: true,
-  },
+  // {
+  //   id: 'blankpage',
+  //   icon: 'iconsminds-bucket',
+  //   label: 'menu.blank-page',
+  //   to: `${adminRoot}/blank-page`,
+  // },
+  // {
+  //   id: 'docs',
+  //   icon: 'iconsminds-library',
+  //   label: 'menu.docs',
+  //   to: 'https://gogo-react-docs.coloredstrategies.com/',
+  //   newWindow: true,
+  // },
 ];
 export default data;

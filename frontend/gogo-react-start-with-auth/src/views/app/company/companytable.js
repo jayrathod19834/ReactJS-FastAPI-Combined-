@@ -82,7 +82,13 @@ function ListCompany() {
                         if (result) {
                           try {
                             const res1 = await exportObject.companyDelete(company.company_id)
-                            displayNotification('Deleting', res1.data.detail, 'error');
+                            if (res1.data.detail === 'Not Allowed To Delete'){
+                              console.log('here');
+                              displayNotification('Deleting', res1.data.detail, 'error');
+                            }else{
+                              console.log('in else block');
+                              displayNotification('Deleting', res1.data.detail, 'success');
+                            }  
                           } catch (err) {
                             displayNotification('Deleting Error', err.response.data.detail, 'error');
                           }

@@ -30,12 +30,14 @@ class Company {
     }
 
     add = async (props) => {
+        let state = JSON.parse(props.State)
+        state = state[0]
         const headers = this.getHeader()
         return axios.post(`${BASE_URL_FOR_API}/company`,
             {
                 "company_name": props.CompanyName,
                 "country": props.Country,
-                "state": props.State,
+                "state": state,
                 'city': props.City,
                 "pincode": props.Pincode,
                 "department": props.Department,
@@ -47,10 +49,9 @@ class Company {
     }
 
     update = async (props) => {
-        console.log(props);
         const headers = this.getHeader()
         return axios.put(`${BASE_URL_FOR_API}/company/${props.id}`,
-            {
+            {   
                 "company_name": props.CompanyName,
                 "country": props.Country,
                 "state": props.State,

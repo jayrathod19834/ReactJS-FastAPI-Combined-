@@ -4,7 +4,7 @@ from http import HTTPStatus
 from config import logError
 
 def update_company(data,cur_user,id):
-    if databaseHelper.validate_comp_name(data.company_name):
+    if databaseHelper.validate_comp_name_update(data.company_name,id):
        raise HTTPException(status_code = HTTPStatus.ALREADY_REPORTED, detail = logError.COMPANY_ALREADY_REGISTERED)
     role = databaseHelper.role_power(cur_user.id)
     if role == 'Superadmin':

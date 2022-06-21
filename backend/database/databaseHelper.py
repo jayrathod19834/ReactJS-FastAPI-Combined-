@@ -1,3 +1,4 @@
+from fastapi import Query
 from database.engine import session,engine
 import datetime
 import bcrypt
@@ -119,6 +120,14 @@ def delete_user_supervisor(id):
 
 def validate_comp_name(cmpny_name: str):
     return db.query(models.Company).filter(models.Company.company_name == cmpny_name).first()
+
+def validate_comp_name_update(cmpny_name: str,id: int):
+    query = f'SELECT company_name FROM company WHERE company_id != {id}'
+    res = db.execute(query).fetchall()
+    if cmpny_name in res:
+        return True
+    else:
+        return False
 
 def list_of_cid():
     companyid = db.query(models.Company).with_entities(models.Company.company_id)

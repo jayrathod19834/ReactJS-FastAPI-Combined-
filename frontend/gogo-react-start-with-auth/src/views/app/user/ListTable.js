@@ -77,7 +77,7 @@ function ListTable() {
                           if (result){
                             try{
                               const res1 = await exportObject.userDelete(users.id)
-                              displayNotification('Deleting', res1.data, 'error');
+                              displayNotification('Deleting', res1.data, 'success');
                             }catch (err){
                               displayNotification('Deleting Error', err.response.data.detail, 'error');
                             }

@@ -4,8 +4,10 @@ import { CardBody, CardTitle, Card, Label, FormGroup, Row, Button } from 'reacts
 import { Colxx } from 'components/common/CustomBootstrap';
 import IntlMessages from 'helpers/IntlMessages';
 import * as yup from 'yup';
+import { Country, State, City } from 'country-state-city';
 import exportObject from "api";
 import displayNotification from "../../components/common/react-notifications/DisplayNotification";
+
 
 const validationSchemas = yup.object({
   CompanyName: yup
@@ -46,14 +48,28 @@ const validationSchemas = yup.object({
 
 const AddCompany = () => {
 
+  const countries = Country.getAllCountries();
+
   // eslint-disable-next-line no-unused-vars
-  const [success, setSuccess] = useState(false);
+
+  const [seldis, setSeldis] = useState(true)
+
+  const [selbox, setSelbox] = useState(true)
+
+  const [stat, setStat] = useState('')
+
+  const cities = City.getCitiesOfState('IN', stat)
+
+  const states = State.getStatesOfCountry('IN')
 
   const submitForm = async (values) => {
     try {
       const response = await exportObject.companyAdd(values)
-      setSuccess(response.data.detail)
-      displayNotification('Company', response.data.detail, "success");
+      if (response.data.detail === 'COMPANY WITH SAME NAME ALREADY REGISTERED') {
+        displayNotification('Company', response.data.detail, "error");
+      } else {
+        displayNotification('Company', response.data.detail, "success");
+      }
     } catch (err) {
       displayNotification('Company', err.response.data.detail, "error");
     }
@@ -81,6 +97,8 @@ const AddCompany = () => {
             onSubmit={submitForm}
           >
             {({
+              disabled,
+              setFieldValue,
               errors,
               touched,
             }) => (
@@ -108,11 +126,29 @@ const AddCompany = () => {
                   <Colxx md='4'>
                     <FormGroup>
                       <Label className="form-group has-float-label">
-                        <Field className='w-100' style={{ height: '30px' }}
+                        <Field className='w-100' as='select' style={{ height: '30px' }}
                           id="Country"
                           name="Country"
                           label="Country"
-                          type="string" />
+                          type="string"
+                          onChange={(event) => {
+                            setFieldValue('Country', event.target.value);
+                            if (event.target.value === 'India') {
+                              setSelbox(true)
+                              setSeldis(false)
+                            } else {
+                              setFieldValue('State', '')
+                              setFieldValue('City', '')
+                              setSeldis(true)
+                              setSelbox(false)
+                            }
+                          }}
+                        >
+                          <option value=''>----SELECT COUNTRY----</option>
+                          {countries.map((countr) => (
+                            <option value={countr.name} key={countr.name}>{countr.name}</option>
+                          ))}
+                        </Field>
                         {errors.Country && touched.Country ? (
                           <div className="invalid-feedback d-block">
                             {errors.Country}
@@ -127,11 +163,28 @@ const AddCompany = () => {
                   <Colxx md='4'>
                     <FormGroup>
                       <Label className="form-group has-float-label">
-                        <Field className='w-100' style={{ height: '30px' }}
-                          id="State"
-                          name="State"
-                          label="State"
-                          type="string" />
+                        {(selbox) ?
+                          <Field className='w-100' disabled={seldis} as='select' style={{ height: '30px' }}
+                            id="State"
+                            name="State"
+                            label="State"
+                            type="string"
+                            onChange={(event) => {
+                              setFieldValue('State', event.target.value)
+                              let isoc = JSON.parse(event.target.value)
+                              setStat(isoc[1])
+                              setFieldValue('City', '')
+                            }}>
+                            <option value=''>----SELECT STATE----</option>
+                            {states.map((st) => (
+                              <option value={JSON.stringify([st.name, st.isoCode])} key={st.name}>{st.name}</option>
+                            ))}
+                          </Field> :
+                          <Field className='w-100' style={{ height: '30px' }}
+                            id="State"
+                            name="State"
+                            label="State"
+                            type="string" />}
                         {errors.State && touched.State ? (
                           <div className="invalid-feedback d-block">
                             {errors.State}
@@ -148,11 +201,22 @@ const AddCompany = () => {
                   <Colxx md='4'>
                     <FormGroup>
                       <Label className="form-group has-float-label">
-                        <Field className='w-100' style={{ height: '30px' }}
-                          id="City"
-                          name="City"
-                          label="City"
-                          type="string" />
+                        {(selbox) ?
+                          <Field className='w-100' disabled={seldis} as='select' style={{ height: '30px' }}
+                            id="City"
+                            name="City"
+                            label="City"
+                            type="string">
+                            <option value=''>----SELECT CITY----</option>
+                            {cities.map((ct) => (
+                              <option value={ct.name} key={ct.name}>{ct.name}</option>
+                            ))}
+                          </Field> :
+                          <Field className='w-100' style={{ height: '30px' }}
+                            id="City"
+                            name="City"
+                            label="City"
+                            type="string" />}
                         {errors.City && touched.City ? (
                           <div className="invalid-feedback d-block">
                             {errors.City}
