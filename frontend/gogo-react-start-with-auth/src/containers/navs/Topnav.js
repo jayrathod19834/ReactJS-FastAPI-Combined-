@@ -14,7 +14,7 @@ import {
 import { NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
 
-import IntlMessages from 'helpers/IntlMessages';
+// import IntlMessages from 'helpers/IntlMessages';
 import {
   setContainerClassnames,
   clickOnMobileMenu,
@@ -27,14 +27,14 @@ import {
   searchPath,
   localeOptions,
   isDarkSwitchActive,
-  buyUrl,
+  // buyUrl,
   adminRoot,
 } from 'constants/defaultValues';
 
 import { MobileMenuIcon, MenuIcon } from 'components/svg';
 import { getDirection, setDirection, getCurrentUser } from 'helpers/Utils';
-import TopnavEasyAccess from './Topnav.EasyAccess';
-import TopnavNotifications from './Topnav.Notifications';
+// import TopnavEasyAccess from './Topnav.EasyAccess';
+// import TopnavNotifications from './Topnav.Notifications';
 import TopnavDarkSwitch from './Topnav.DarkSwitch';
 
 const TopNav = ({
@@ -265,7 +265,7 @@ const TopNav = ({
             </DropdownMenu>
           </UncontrolledDropdown>
         </div>
-        <div className="position-relative d-none d-none d-lg-inline-block">
+        {/* <div className="position-relative d-none d-none d-lg-inline-block">
           <a
             className="btn btn-outline-primary btn-sm ml-2"
             target="_top"
@@ -273,7 +273,7 @@ const TopNav = ({
           >
             <IntlMessages id="user.buy" />
           </a>
-        </div>
+        </div> */}
       </div>
       <NavLink className="navbar-logo" to={adminRoot}>
         <span className="logo d-none d-xs-block" />
@@ -283,8 +283,8 @@ const TopNav = ({
       <div className="navbar-right">
         {isDarkSwitchActive && <TopnavDarkSwitch />}
         <div className="header-icons d-inline-block align-middle">
-          <TopnavEasyAccess />
-          <TopnavNotifications />
+          {/* <TopnavEasyAccess />
+          <TopnavNotifications /> */}
           <button
             className="header-icon btn btn-empty d-none d-sm-inline-block"
             type="button"
@@ -307,11 +307,11 @@ const TopNav = ({
               </span>
             </DropdownToggle>
             <DropdownMenu className="mt-3" right>
-              <DropdownItem>Account</DropdownItem>
+              {/* <DropdownItem>Account</DropdownItem>
               <DropdownItem>Features</DropdownItem>
               <DropdownItem>History</DropdownItem>
               <DropdownItem>Support</DropdownItem>
-              <DropdownItem divider />
+              <DropdownItem divider /> */}
               <DropdownItem onClick={() => handleLogout()}>
                 Sign out
               </DropdownItem>

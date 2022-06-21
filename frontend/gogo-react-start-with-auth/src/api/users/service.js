@@ -47,7 +47,6 @@ class Users {
     }
 
     update = async (props) => {
-        console.log(props);
         const headers = this.getHeader()
         return axios.put(`${BASE_URL_FOR_API}/user/${props.id}`,
             {
