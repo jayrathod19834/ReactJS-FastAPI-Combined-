@@ -64,6 +64,12 @@ const AddCompany = () => {
 
   const submitForm = async (values) => {
     try {
+      const strstate = JSON.parse(values.State)
+      // eslint-disable-next-line
+      values.State = strstate[0]
+    }
+    finally {
+    try {
       const response = await exportObject.companyAdd(values)
       if (response.data.detail === 'COMPANY WITH SAME NAME ALREADY REGISTERED') {
         displayNotification('Company', response.data.detail, "error");
@@ -73,7 +79,7 @@ const AddCompany = () => {
     } catch (err) {
       displayNotification('Company', err.response.data.detail, "error");
     }
-  }
+  }}
 
   return (
     <div>
