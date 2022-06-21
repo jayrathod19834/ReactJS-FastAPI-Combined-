@@ -22,6 +22,7 @@ function GlideComponent(props) {
 
   const initGlide = () => {
     glideCarousel = new Glide(carousel, {
+      // eslint-disable-next-line
       ...props.settings,
       direction: getDirection().direction,
     });
@@ -51,6 +52,7 @@ function GlideComponent(props) {
   }, []);
 
   const renderDots = () => {
+    // eslint-disable-next-line
     const total = React.Children.count(props.children);
     const dots = [];
     // eslint-disable-next-line no-plusplus

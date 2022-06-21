@@ -65,6 +65,7 @@ const UpdateCompany = ({ preloadedvalues }) => {
   const submitForm = async (values) => {
     try {
       const strstate = JSON.parse(values.State)
+      // eslint-disable-next-line
       values.State = strstate[0]
     }
     finally {
@@ -102,6 +103,7 @@ const UpdateCompany = ({ preloadedvalues }) => {
             onSubmit={submitForm}
           >
             {({
+              // eslint-disable-next-line
               disabled,
               setFieldValue,
               errors,
@@ -176,6 +178,7 @@ const UpdateCompany = ({ preloadedvalues }) => {
                             type="string"
                             onChange={(event) => {
                               setFieldValue('State', event.target.value)
+                              // eslint-disable-next-line
                               let isoc = JSON.parse(event.target.value)
                               setStat(isoc[1])
                               setFieldValue('City', '')

@@ -31,6 +31,7 @@ class Company {
 
     add = async (props) => {
         let state = JSON.parse(props.State)
+        // eslint-disable-next-line
         state = state[0]
         const headers = this.getHeader()
         return axios.post(`${BASE_URL_FOR_API}/company`,

@@ -97,6 +97,7 @@ const AddCompany = () => {
             onSubmit={submitForm}
           >
             {({
+              // eslint-disable-next-line
               disabled,
               setFieldValue,
               errors,
@@ -171,6 +172,7 @@ const AddCompany = () => {
                             type="string"
                             onChange={(event) => {
                               setFieldValue('State', event.target.value)
+                              // eslint-disable-next-line
                               let isoc = JSON.parse(event.target.value)
                               setStat(isoc[1])
                               setFieldValue('City', '')
